@@ -1,0 +1,189 @@
+{
+	"info": {
+		"_postman_id": "6484ed39-8246-4ca0-9e39-a20e94a55a66",
+		"name": "QATEST",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19230866"
+	},
+	"item": [
+		{
+			"name": "api-1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"const schema = {\r",
+							"    \"type\": \"object\",\r",
+							"    \"properties\": {\r",
+							"        \"aemEnabled\": { \"type\": \"boolean\" },\r",
+							"        \"aemFnLnEnabled\": { \"type\": \"boolean\" },\r",
+							"        \"aemPhEnabled\": { \"type\": \"boolean\" },\r",
+							"        \"aemGeEnabled\": { \"type\": \"boolean\" },\r",
+							"        \"aemDbEnabled\": { \"type\": \"boolean\" },\r",
+							"        \"aemLocEnabled\": { \"type\": \"boolean\" },\r",
+							"        \"ctEpikIframeEnabled\": { \"type\": \"boolean\" },\r",
+							"        \"chromeNewUserAgentEnabled\": { \"type\": \"boolean\" },\r",
+							"        \"isEu\": { \"type\": \"boolean\" },\r",
+							"        \"isUtilizingAdvertiser1pEnabled\": { \"type\": \"boolean\" },\r",
+							"        \"mdFrequency\": { \"type\": \"number\" },\r",
+							"        \"ecmOriginTrialToken\": { \"type\": \"string\" },\r",
+							"        \"piaaEndPoint\": { \"type\": \"string\" }\r",
+							"    },\r",
+							"    \"required\": [\r",
+							"        \"aemEnabled\",\r",
+							"        \"aemFnLnEnabled\",\r",
+							"        \"aemPhEnabled\",\r",
+							"        \"aemGeEnabled\",\r",
+							"        \"aemDbEnabled\",\r",
+							"        \"aemLocEnabled\",\r",
+							"        \"ctEpikIframeEnabled\",\r",
+							"        \"chromeNewUserAgentEnabled\",\r",
+							"        \"isEu\",\r",
+							"        \"isUtilizingAdvertiser1pEnabled\",\r",
+							"        \"mdFrequency\",\r",
+							"        \"ecmOriginTrialToken\",\r",
+							"        \"piaaEndPoint\"\r",
+							"    ]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validate Schema\", () => {\r",
+							"    pm.response.to.have.jsonSchema(schema);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validate that isUtilizingAdvertiser1pEnabled is 'false'.\", () => {\r",
+							"    let jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.isUtilizingAdvertiser1pEnabled).to.eql(false);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"/**\r",
+							" * For parameter 'tid', please use current time, and 'cb' use the next day any time\r",
+							" */\r",
+							"\r",
+							"// Getting Today and nextDay Date\r",
+							"var today = new Date();\r",
+							"var nextDay = new Date();\r",
+							"nextDay.setDate(today.getDate() + 1);\r",
+							"\r",
+							"//Setting variables to use in the params\r",
+							"pm.collectionVariables.set(\"tid\", today.getTime());\r",
+							"pm.collectionVariables.set(\"cb\", nextDay.getTime());\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://ct.pinterest.com/user/?event=search&ed=%7B%22np%22%3A%22gtm%22%7D&tid={{tid}}&cb={{cb}}",
+					"protocol": "https",
+					"host": [
+						"ct",
+						"pinterest",
+						"com"
+					],
+					"path": [
+						"user",
+						""
+					],
+					"query": [
+						{
+							"key": "event",
+							"value": "search"
+						},
+						{
+							"key": "ed",
+							"value": "%7B%22np%22%3A%22gtm%22%7D"
+						},
+						{
+							"key": "tid",
+							"value": "{{tid}}"
+						},
+						{
+							"key": "cb",
+							"value": "{{cb}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api-2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Validate it contains 'Sql error'\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"Sql error\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 500\", function () {\r",
+							"    pm.response.to.have.status(500);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://www.google.com/recaptcha/api2/webworker.js?hl=en&v=ovmhLiigaw4D9ujHYlHcKKhP",
+					"protocol": "https",
+					"host": [
+						"www",
+						"google",
+						"com"
+					],
+					"path": [
+						"recaptcha",
+						"api2",
+						"webworker.js"
+					],
+					"query": [
+						{
+							"key": "hl",
+							"value": "en"
+						},
+						{
+							"key": "v",
+							"value": "ovmhLiigaw4D9ujHYlHcKKhP"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "tid",
+			"value": ""
+		},
+		{
+			"key": "cb",
+			"value": ""
+		}
+	]
+}
